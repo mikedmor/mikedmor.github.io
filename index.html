@@ -3,23 +3,508 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>mikedmor</title>
+    <title>mikedmor · Projects</title>
+    <meta name="description" content="Open-source projects by mikedmor: self-hosted apps, home lab tools, 3D printing and virtual pinball." />
+    <meta name="color-scheme" content="light dark" />
     <style>
-      :root { color-scheme: light dark; }
-      body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-      main { max-width: 40rem; margin: 0 auto; padding: 3rem 1.25rem; }
-      a { color: #e8743b; font-weight: 600; }
+      :root {
+        --bg: #f7f5f2;
+        --surface: #ffffff;
+        --surface-2: #f0ece6;
+        --ink: #1f1a16;
+        --muted: #6f655c;
+        --line: #e6dfd6;
+        --accent: #e8743b;
+        --accent-soft: color-mix(in oklab, var(--accent) 14%, transparent);
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+        --radius: 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #121010;
+          --surface: #1b1816;
+          --surface-2: #24201d;
+          --ink: #f4eee8;
+          --muted: #a59a90;
+          --line: #2f2925;
+          --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px rgb(0 0 0 / 0.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; }
+      main { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem 4rem; }
+
+      /* Header */
+      .hero {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 4rem 0 2.5rem;
+      }
+      .avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--accent-soft);
+        object-fit: cover;
+      }
+      .hero h1 { margin: 0; font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -0.02em; }
+      .hero .handle { color: var(--muted); font-weight: 600; }
+      .hero p { margin: 0.5rem 0 0; color: var(--muted); max-width: 42rem; }
+      .stats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+      .stat {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .stat b { color: var(--accent); }
+      a.stat:hover { border-color: var(--accent); }
+      @media (max-width: 560px) {
+        .hero { grid-template-columns: 1fr; text-align: left; padding-top: 2.5rem; }
+        .avatar { width: 72px; height: 72px; }
+      }
+
+      /* Sections */
+      h2 {
+        margin: 2.5rem 0 1rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
+      .featured { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      @media (max-width: 760px) { .featured { grid-template-columns: 1fr; } }
+      @media (max-width: 420px) {
+        .grid, .featured { grid-template-columns: 1fr; }
+      }
+
+      /* Cards */
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1.25rem 1.3rem 1.1rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transition: transform 0.15s ease, border-color 0.15s ease;
+      }
+      .card:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--accent) 45%, var(--line)); }
+      .card.big { padding: 1.5rem; gap: 0.75rem; }
+      .card.big::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        border-radius: var(--radius) var(--radius) 0 0;
+        background: var(--lang, var(--accent));
+      }
+      .card h3 { margin: 0; font-size: 1.1rem; line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+      .card.big h3 { font-size: 1.3rem; }
+      .card h3 a { text-decoration: none; }
+      .card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+      .card h3 a:focus-visible { outline: none; }
+      .card:has(h3 a:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+      .desc { margin: 0; color: var(--muted); font-size: 0.95rem; flex-grow: 1; }
+      .desc.none { font-style: italic; opacity: 0.8; }
+      .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 1rem; font-size: 0.82rem; color: var(--muted); }
+      .meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+      .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--lang, #8b8b8b); }
+      .topics { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+      .topic {
+        padding: 0.12rem 0.55rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: color-mix(in oklab, var(--accent) 80%, var(--ink));
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .links { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.15rem; }
+      .links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-size: 0.82rem;
+        font-weight: 650;
+        text-decoration: none;
+      }
+      .links a:hover { border-color: var(--accent); color: var(--accent); }
+      .links a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .links a.primary:hover { filter: brightness(1.08); color: #fff; }
+      .badge {
+        position: relative;
+        z-index: 1;
+        align-self: flex-start;
+        padding: 0.1rem 0.5rem;
+        border-radius: 6px;
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      /* Toolbar */
+      .toolbar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 1rem; }
+      .search {
+        flex: 1 1 14rem;
+        min-width: 0;
+        padding: 0.6rem 0.9rem;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+      }
+      .search:focus, select:focus { outline: 3px solid var(--accent-soft); border-color: var(--accent); }
+      select {
+        padding: 0.6rem 0.9rem;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+      .chip .dot { width: 0.6rem; height: 0.6rem; }
+
+      .empty, .error { padding: 2rem; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); }
+      .skeleton { height: 10rem; border-radius: var(--radius); background: linear-gradient(90deg, var(--surface) 0%, var(--surface-2) 50%, var(--surface) 100%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border: 1px solid var(--line); }
+      @keyframes shimmer { to { background-position: -200% 0; } }
+      @media (prefers-reduced-motion: reduce) {
+        .card, .skeleton { transition: none; animation: none; }
+      }
+
+      footer { margin-top: 3.5rem; color: var(--muted); font-size: 0.85rem; text-align: center; }
+      footer a { color: var(--accent); font-weight: 600; }
+      .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     </style>
   </head>
   <body>
     <main>
-      <h1>Open-source projects</h1>
-      <ul>
-        <li>
-          <a href="hearth/">Hearth</a>: a home network's start page
-          (<a href="https://github.com/mikedmor/hearth">source</a>)
-        </li>
-      </ul>
+      <header class="hero">
+        <img class="avatar" id="avatar" alt="" width="96" height="96" />
+        <div>
+          <h1 id="name">mikedmor</h1>
+          <div class="handle" id="handle">@mikedmor</div>
+          <p id="bio">Open-source projects for the home: self-hosted apps, home lab tools, 3D printing and virtual pinball.</p>
+          <div class="stats" id="stats"></div>
+        </div>
+      </header>
+
+      <section aria-labelledby="featured-title">
+        <h2 id="featured-title">Featured</h2>
+        <div class="grid featured" id="featured">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="all-title">
+        <h2 id="all-title">All projects</h2>
+        <div class="toolbar">
+          <label class="sr-only" for="q">Search projects</label>
+          <input class="search" id="q" type="search" placeholder="Search projects…" autocomplete="off" />
+          <label class="sr-only" for="sort">Sort by</label>
+          <select id="sort">
+            <option value="updated">Recently updated</option>
+            <option value="stars">Most stars</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+        <div class="chips" id="langs" role="group" aria-label="Filter by language"></div>
+        <div class="grid" id="all">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          Kept up to date from GitHub on every visit.
+          <a href="https://github.com/mikedmor">More on GitHub</a>
+        </p>
+      </footer>
     </main>
+
+    <script>
+      // ---------------------------------------------------------------------------------------
+      // Settings: whose projects, which ones to feature first, and which to leave out.
+      const USER = "mikedmor";
+      const FEATURED = ["hearth", "muny", "ArcadeScore", "OctoPrint_MultiCam"];
+      const HIDE = [`${USER}.github.io`];
+      /** How to write a project's name, when the repository's isn't how you'd say it. */
+      const NAMES = {
+        "simhub-griddash": "SimHub GridDash",
+        GoogleSheetsMiningTrackerForNicehash: "Google Sheets Mining Tracker for NiceHash",
+        GoogleSheetsMiningTrackerForEthermine: "Google Sheets Mining Tracker for Ethermine",
+        Octoprint_Temp_Preset: "OctoPrint Temperature Presets",
+        Octoprint_RGBControl: "OctoPrint RGB Control",
+      };
+      const CACHE_MINUTES = 60;
+      // ---------------------------------------------------------------------------------------
+
+      const LANG_COLORS = {
+        TypeScript: "#3178c6", JavaScript: "#f1e05a", Python: "#3572A5", "C#": "#178600",
+        HTML: "#e34c26", CSS: "#663399", Shell: "#89e051", PowerShell: "#012456", Go: "#00ADD8",
+        Rust: "#dea584", Java: "#b07219", "C++": "#f34b7d", C: "#555555", Vue: "#41b883",
+        Lua: "#000080", Roff: "#ecdebe", Dockerfile: "#384d54", Kotlin: "#A97BFF", Swift: "#F05138",
+        PHP: "#4F5D95", Ruby: "#701516",
+      };
+      const colorOf = (lang) => LANG_COLORS[lang] || "#8b8b8b";
+      const $ = (id) => document.getElementById(id);
+
+      /** Make an element: el("a", { href, class }, child, "text", …). Text is never parsed as HTML. */
+      function el(tag, attrs = {}, ...kids) {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (v === undefined || v === null || v === false) continue;
+          if (k === "style") node.style.cssText = v;
+          else node.setAttribute(k, v === true ? "" : String(v));
+        }
+        for (const kid of kids.flat()) if (kid !== null && kid !== undefined) node.append(kid);
+        return node;
+      }
+
+      /** Only https links from the data are used. */
+      const safeUrl = (u) => {
+        try {
+          const url = new URL(u);
+          return url.protocol === "https:" ? url.href : null;
+        } catch {
+          return null;
+        }
+      };
+
+      const pretty = (name) => {
+        if (NAMES[name]) return NAMES[name];
+        const words = name.replace(/[_-]+/g, " ");
+        return words.charAt(0).toUpperCase() + words.slice(1);
+      };
+      const ago = (iso) => {
+        const days = Math.floor((Date.now() - Date.parse(iso)) / 86_400_000);
+        if (days < 1) return "today";
+        if (days < 2) return "yesterday";
+        if (days < 30) return `${days} days ago`;
+        const months = Math.floor(days / 30.4);
+        if (months < 12) return `${months} month${months > 1 ? "s" : ""} ago`;
+        const years = Math.floor(days / 365);
+        return `${years} year${years > 1 ? "s" : ""} ago`;
+      };
+
+      function siteOf(repo) {
+        const home = repo.homepage && safeUrl(repo.homepage);
+        if (home) return home;
+        if (repo.has_pages) return `https://${USER}.github.io/${repo.name}/`;
+        return null;
+      }
+
+      function card(repo, big = false) {
+        const lang = repo.language;
+        const site = siteOf(repo);
+        const code = safeUrl(repo.html_url);
+        return el(
+          "article",
+          { class: `card${big ? " big" : ""}`, style: `--lang:${colorOf(lang)}` },
+          repo.archived ? el("span", { class: "badge" }, "Archived") : null,
+          el("h3", {}, el("a", { href: site || code }, pretty(repo.name))),
+          el(
+            "p",
+            { class: `desc${repo.description ? "" : " none"}` },
+            repo.description || "No description yet.",
+          ),
+          repo.topics?.length
+            ? el("div", { class: "topics" }, repo.topics.slice(0, big ? 6 : 4).map((t) => el("span", { class: "topic" }, t)))
+            : null,
+          el(
+            "div",
+            { class: "meta" },
+            lang ? el("span", {}, el("i", { class: "dot", "aria-hidden": "true" }), lang) : null,
+            repo.stargazers_count ? el("span", { title: "Stars" }, `★ ${repo.stargazers_count}`) : null,
+            repo.forks_count ? el("span", { title: "Forks" }, `⑂ ${repo.forks_count}`) : null,
+            el("span", {}, `Updated ${ago(repo.pushed_at || repo.updated_at)}`),
+          ),
+          el(
+            "div",
+            { class: "links" },
+            site ? el("a", { class: "primary", href: site }, "Open site ↗") : null,
+            code ? el("a", { href: code }, "Code") : null,
+          ),
+        );
+      }
+
+      // ------------------------------------------------------------------- data, with a cache
+      async function getJson(path) {
+        const res = await fetch(`https://api.github.com/${path}`, {
+          headers: { Accept: "application/vnd.github+json" },
+        });
+        if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
+        return res.json();
+      }
+
+      function cached() {
+        try {
+          return JSON.parse(localStorage.getItem("portfolio") || "null");
+        } catch {
+          return null;
+        }
+      }
+
+      async function load() {
+        const hit = cached();
+        if (hit && Date.now() - hit.at < CACHE_MINUTES * 60_000) return hit;
+        try {
+          const [user, repos] = await Promise.all([
+            getJson(`users/${USER}`),
+            getJson(`users/${USER}/repos?per_page=100&type=owner&sort=pushed`),
+          ]);
+          const data = { at: Date.now(), user, repos };
+          try {
+            localStorage.setItem("portfolio", JSON.stringify(data));
+          } catch {
+            // Storage is off; it still works, just without the cache.
+          }
+          return data;
+        } catch (e) {
+          if (hit) return { ...hit, stale: true };
+          throw e;
+        }
+      }
+
+      // ------------------------------------------------------------------------------ drawing
+      let repos = [];
+      let lang = "all";
+
+      function drawProfile(user) {
+        const avatar = safeUrl(user.avatar_url);
+        if (avatar) $("avatar").src = `${avatar}${avatar.includes("?") ? "&" : "?"}s=192`;
+        if (user.name) $("name").textContent = user.name;
+        $("handle").textContent = `@${user.login}`;
+        if (user.bio) $("bio").textContent = user.bio;
+        const stars = repos.reduce((n, r) => n + r.stargazers_count, 0);
+        const langs = new Set(repos.map((r) => r.language).filter(Boolean));
+        const blog = user.blog && safeUrl(user.blog.startsWith("http") ? user.blog : `https://${user.blog}`);
+        const chips = [
+          el("span", { class: "stat" }, el("b", {}, String(repos.length)), " projects"),
+          el("span", { class: "stat" }, el("b", {}, `★ ${stars}`), " stars"),
+          el("span", { class: "stat" }, el("b", {}, String(langs.size)), " languages"),
+          el("a", { class: "stat", href: safeUrl(user.html_url) || `https://github.com/${USER}` }, "GitHub ↗"),
+        ];
+        if (blog) chips.push(el("a", { class: "stat", href: blog }, "Website ↗"));
+        $("stats").replaceChildren(...chips);
+      }
+
+      function drawFeatured() {
+        const picked = FEATURED.map((n) => repos.find((r) => r.name.toLowerCase() === n.toLowerCase())).filter(Boolean);
+        const list = picked.length ? picked : [...repos].sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 4);
+        $("featured").replaceChildren(...list.map((r) => card(r, true)));
+      }
+
+      function drawLangs() {
+        const counts = new Map();
+        for (const r of repos) if (r.language) counts.set(r.language, (counts.get(r.language) || 0) + 1);
+        const chip = (value, label, color) =>
+          el(
+            "button",
+            { class: "chip", type: "button", "aria-pressed": String(lang === value), "data-lang": value },
+            color ? el("i", { class: "dot", style: `--lang:${color}`, "aria-hidden": "true" }) : null,
+            label,
+          );
+        $("langs").replaceChildren(
+          chip("all", `All ${repos.length}`),
+          ...[...counts].sort((a, b) => b[1] - a[1]).map(([l, n]) => chip(l, `${l} ${n}`, colorOf(l))),
+        );
+      }
+
+      function drawAll() {
+        const q = $("q").value.trim().toLowerCase();
+        const sort = $("sort").value;
+        const list = repos
+          .filter((r) => lang === "all" || r.language === lang)
+          .filter(
+            (r) =>
+              !q ||
+              [r.name, pretty(r.name), r.description || "", ...(r.topics || [])].join(" ").toLowerCase().includes(q),
+          )
+          .sort((a, b) =>
+            sort === "stars"
+              ? b.stargazers_count - a.stargazers_count || a.name.localeCompare(b.name)
+              : sort === "name"
+                ? a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+                : Date.parse(b.pushed_at) - Date.parse(a.pushed_at),
+          );
+        $("all").replaceChildren(
+          ...(list.length ? list.map((r) => card(r)) : [el("p", { class: "empty" }, "No projects match that.")]),
+        );
+      }
+
+      $("q").addEventListener("input", drawAll);
+      $("sort").addEventListener("change", drawAll);
+      $("langs").addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-lang]");
+        if (!b) return;
+        lang = b.dataset.lang;
+        drawLangs();
+        drawAll();
+      });
+
+      load()
+        .then((data) => {
+          repos = data.repos.filter((r) => !r.fork && !r.private && !HIDE.includes(r.name));
+          drawProfile(data.user);
+          drawFeatured();
+          drawLangs();
+          drawAll();
+          if (data.stale)
+            $("all").before(el("p", { class: "empty" }, "GitHub isn't answering right now, so this is the last saved list."));
+        })
+        .catch(() => {
+          const msg = () =>
+            el("p", { class: "error" }, "Couldn't load the projects from GitHub just now. ", el("a", { href: `https://github.com/${USER}?tab=repositories` }, "See them on GitHub"), ".");
+          $("featured").replaceChildren(msg());
+          $("all").replaceChildren();
+          $("stats").replaceChildren();
+        });
+    </script>
   </body>
 </html>
