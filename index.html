@@ -322,6 +322,8 @@
         cursor: zoom-in;
       }
       .phone img { border-radius: 20px; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; }
+      .phone { transition: opacity 0.25s, transform 0.25s; }
+      .phone.away { opacity: 0; transform: translateY(12px); pointer-events: none; }
       .show.flip .phone { right: auto; left: -1.25rem; }
       @media (max-width: 960px) { .phone, .show.flip .phone { right: 0.5rem; left: auto; bottom: -1.5rem; width: 26%; } }
       .stage.narrow { max-width: 30rem; margin-inline: auto; }
@@ -508,7 +510,7 @@
         html { scroll-behavior: auto; }
         .reveal { opacity: 1; transform: none; transition: none; }
         .live, .skeleton { animation: none; }
-        .btn, .commit, .shot img { transition: none; }
+        .btn, .commit, .shot img, .phone { transition: none; }
       }
     </style>
   </head>
@@ -710,12 +712,11 @@
             "<b>Widgets for what the house runs</b>, ready-made or designed from a sentence by an AI on your own server.",
           ],
           shots: [
-            { src: "img/hearth/home.webp", caption: "Alex's page: favourites, every service with its status, the week ahead and countdowns." },
-            { src: "img/hearth/sam.webp", caption: "Sam's page, same home, in the Ocean theme." },
-            { src: "img/hearth/calendar.webp", caption: "The calendar: a family calendar shared with everyone, and a work one that isn't." },
-            { src: "img/hearth/edit.webp", caption: "Edit in place: drag sections and links, star favourites, choose who sees what." },
+            { src: "img/hearth/home.webp", phone: "img/hearth/home-phone.webp", caption: "Alex's page: favourites, every service with its status, the week ahead and countdowns." },
+            { src: "img/hearth/sam.webp", phone: "img/hearth/sam-phone.webp", caption: "Sam's page, same home, in the Ocean theme." },
+            { src: "img/hearth/calendar.webp", phone: "img/hearth/calendar-phone.webp", caption: "The calendar: a family calendar shared with everyone, and a work one that isn't." },
+            { src: "img/hearth/edit.webp", phone: "img/hearth/edit-phone.webp", caption: "Edit in place: drag sections and links, star favourites, choose who sees what." },
           ],
-          phone: { src: "img/hearth/phone.webp", caption: "On a phone, favourites sit in a dock at the bottom." },
           links: [
             { label: "Visit the site", site: true },
             { label: "Code", code: true },
@@ -734,11 +735,11 @@
             "<b>Finds money to save</b>: doubled-up subscriptions, price rises, card interest and idle cash.",
           ],
           shots: [
-            { src: "img/muny/overview.webp", caption: "The Overview: this month against last, what's coming in, accounts, cards and loans." },
-            { src: "img/muny/budgets.webp", caption: "Budgets with rollover and a month-end forecast." },
+            { src: "img/muny/overview.webp", phone: "img/muny/overview-phone.webp", caption: "The Overview: this month against last, what's coming in, accounts, cards and loans." },
+            { src: "img/muny/recurring.webp", phone: "img/muny/recurring-phone.webp", caption: "Recurring bills and subscriptions: what's due, what's paid, and price rises." },
+            { src: "img/muny/budgets.webp", phone: "img/muny/budgets-phone.webp", caption: "Budgets with rollover and a month-end forecast." },
             { src: "img/muny/agents.webp", caption: "AI assistants get their own keys, and only the access you give them." },
           ],
-          phone: { src: "img/muny/phone.webp", caption: "The Overview on a phone." },
           links: [
             { label: "Visit the site", site: true },
             { label: "Code", code: true },
@@ -1059,7 +1060,8 @@
             const repo = byName(repos, p.repo);
             const links = linksOf(p, repo);
             const name = pretty(p.repo);
-            const pics = [...p.shots, ...(p.phone ? [p.phone] : [])];
+            const phones = p.shots.filter((s) => s.phone).map((s) => ({ src: s.phone, caption: `${s.caption} On a phone.` }));
+            const pics = [...p.shots, ...phones];
             const g = galleries.push({ name, pics }) - 1;
             const first = p.shots[0];
 
@@ -1102,6 +1104,7 @@
                           caption.textContent = s.caption;
                           shotImg.onload = () => shotImg.classList.remove("swap");
                           if (shotImg.complete) shotImg.classList.remove("swap");
+                          showPhone(s);
                         }, reduceMotion ? 0 : 160);
                       });
                       return b;
@@ -1109,11 +1112,24 @@
                   )
                 : null;
 
-            const phone = p.phone
-              ? el("button", { class: "phone", type: "button", "aria-label": `See ${name} on a phone, full size` },
-                  el("img", { src: p.phone.src, alt: `${name}: ${p.phone.caption}`, loading: "lazy", decoding: "async" }))
+            // The phone shows the same screen as the big picture, and steps aside when there's none.
+            const phoneImg = phones.length ? el("img", { src: phones[0].src, alt: "", loading: "lazy", decoding: "async" }) : null;
+            const phone = phoneImg
+              ? el("button", { class: "phone", type: "button", "aria-label": `See ${name} on a phone, full size` }, phoneImg)
               : null;
-            phone?.addEventListener("click", () => openLightbox(g, pics.length - 1));
+            function showPhone(s) {
+              if (!phone) return;
+              phone.classList.toggle("away", !s.phone);
+              phone.tabIndex = s.phone ? 0 : -1;
+              if (!s.phone) return;
+              phoneImg.src = s.phone;
+              phoneImg.alt = `${name} on a phone: ${s.caption}`;
+            }
+            if (phone) showPhone(first);
+            phone?.addEventListener("click", () => {
+              const at = pics.findIndex((x) => x.src === p.shots[current].phone);
+              if (at >= 0) openLightbox(g, at);
+            });
 
             const facts = el(
               "div",
