@@ -437,6 +437,33 @@
       .note { padding: 1.5rem; text-align: center; color: var(--muted); border: 1px dashed var(--line-2); border-radius: var(--radius); }
       .note a { color: var(--amber); font-weight: 650; }
 
+      /* ------------------------------------------------------------------ support */
+      .support {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 2.5rem;
+        align-items: center;
+        padding: 2.5rem;
+        border-radius: 24px;
+        border: 1px solid var(--line-2);
+        background:
+          radial-gradient(40rem 20rem at 100% 0%, rgb(255 122 26 / 0.16), transparent 70%),
+          radial-gradient(30rem 20rem at 0% 100%, rgb(232 121 249 / 0.08), transparent 70%),
+          var(--panel);
+        overflow: hidden;
+      }
+      @media (max-width: 760px) { .support { grid-template-columns: minmax(0, 1fr); padding: 1.75rem 1.5rem; } }
+      .support h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.025em; line-height: 1.1; text-wrap: balance; }
+      .support p { margin: 0.9rem 0 0; color: var(--muted); max-width: 38rem; }
+      .support ul { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: 0.4rem; color: var(--muted); font-size: 0.93rem; }
+      .support li::before { content: "♥"; margin-right: 0.6rem; color: var(--amber); }
+      .support li b { color: var(--ink); font-weight: 650; }
+      .give { display: grid; justify-items: center; gap: 0.7rem; text-align: center; }
+      .btn.donate { padding: 0.95rem 1.6rem; font-size: 1.05rem; box-shadow: 0 0 40px -6px rgb(255 122 26 / 0.6); }
+      .btn.donate svg { width: 1.2rem; height: 1.2rem; }
+      .give small { color: var(--faint); font-size: 0.82rem; }
+
       /* ------------------------------------------------------------------ footer */
       footer { margin-top: 4rem; padding: 2.5rem 0 3rem; border-top: 1px solid rgb(255 255 255 / 0.05); color: var(--faint); font-size: 0.88rem; }
       footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
@@ -505,6 +532,7 @@
           <a class="opt" href="#bench">Now</a>
           <a href="#showcase">Showcase</a>
           <a href="#projects">Projects</a>
+          <a class="opt" href="#support">Support</a>
           <a href="https://github.com/mikedmor">GitHub ↗</a>
         </nav>
       </div>
@@ -589,12 +617,40 @@
         </div>
         <div class="worlds" id="worlds"></div>
       </section>
+
+      <section id="support" class="wrap" aria-labelledby="support-title">
+        <div class="support reveal">
+          <div>
+            <span class="num">05 · Support</span>
+            <h2 id="support-title">Free to use, kept going by the people who use it</h2>
+            <p>
+              I offer most of my projects completely free: no ads, no accounts and nothing to subscribe to. If
+              one of them saves you money or time, a donation helps support their continued development.
+            </p>
+            <ul>
+              <li><b>Star</b> the projects you use on GitHub</li>
+              <li><b>Report a bug</b> or suggest an idea in a project's issues</li>
+              <li><b>Share</b> them with someone who'd find them useful</li>
+            </ul>
+          </div>
+          <div class="give">
+            <a class="btn primary donate" href="https://www.paypal.com/paypalme/mikedmor">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.1 0 3.6 1.2 4.4 2.5.8-1.3 2.3-2.5 4.4-2.5 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21Z"/></svg>
+              Donate with PayPal
+            </a>
+            <small>Any amount helps. Thank you!</small>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
       <div class="wrap">
         <span>Filled in from GitHub on each visit. No cookies, no tracking.</span>
-        <span><a href="https://github.com/mikedmor">github.com/mikedmor</a></span>
+        <span>
+          <a href="https://www.paypal.com/paypalme/mikedmor">Donate</a> ·
+          <a href="https://github.com/mikedmor">github.com/mikedmor</a>
+        </span>
       </div>
     </footer>
 
