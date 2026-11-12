@@ -34,6 +34,15 @@ The settings are at the top of the script in `index.html`:
 | `HIDE`         | Repositories to leave out.                                                                       |
 
 Screenshots are WebP, about 1600 pixels wide. Phone screenshots go in a project's `phone` setting.
+A desktop app's showcase takes `frame: "app"` for a title bar instead of a browser's, and a
+screenshot of a whole screen takes `frame: "screen"` for no frame at all.
+
+A showcase with `unreleased: true` stays hidden until its repository is public, then appears on
+its own (within an hour for returning visitors). Its screenshots and text are still in this
+repository's source, so only add one you're happy for people to find early.
+
+The tab icon (`favicon.ico`, `icon.png`, `apple-touch-icon.png`) is my GitHub avatar, saved here.
+Save it again if the avatar changes.
 
 A link with `site: true` is the project's own site. A repository with GitHub Pages turned on is
 only linked as a site once its page answers, so a repository that has Pages on but never published
