@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hearth for Android · Set up</title>
+    <meta name="description" content="Set up Hearth on your own server and connect the Hearth Android app to it." />
+    <meta name="theme-color" content="#0c0a09" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="stylesheet" href="../apps.css" />
+    <style>:root { --c: #ff7a2f; }</style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="wrap">
+        <a class="home" href="../../">mikedmor</a>
+        <nav>
+          <a href="../">Android apps</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="../delete-account/">Delete an account</a>
+        </nav>
+      </div>
+    </div>
+    <main class="wrap">
+      <header class="page">
+        <p class="kicker">Hearth for Android</p>
+        <h1>Set up Hearth</h1>
+        <p class="lede">
+          Hearth is the family's start page for the home network: every service, everyone's calendar and live widgets.
+          The app connects to <em>your</em> Hearth: set that up first, then point the app at it.
+        </p>
+      </header>
+
+      <h2>1. Run Hearth at home</h2>
+      <p>
+        Hearth is one Docker container. Follow the
+        <a href="https://github.com/mikedmor/hearth/blob/main/guides/install.md">install guide</a>, open it in a browser,
+        enter the setup code from the container's log and choose the admin password.
+      </p>
+
+      <h2>2. Give it an https address your phone trusts</h2>
+      <p>The app only connects over <code>https://</code>. Either works:</p>
+      <ul>
+        <li><b>Tailscale</b>, using the https name it gives you.</li>
+        <li><b>A home name</b> such as <code>https://start.home</code>, with your home's certificate installed on the phone. Hearth walks you through it: see <a href="https://github.com/mikedmor/hearth/blob/main/guides/trust.md">Trusting your home's certificate</a>.</li>
+      </ul>
+
+      <h2>3. Connect the app</h2>
+      <ol class="steps">
+        <li>Install Hearth from Google Play and open it.</li>
+        <li>Enter your Hearth address, like <code>https://start.home</code>, and tap <b>Connect</b>. The app checks it really is Hearth.</li>
+        <li>Pick your face on <b>Who's here?</b>, as on any screen in the house.</li>
+      </ol>
+      <p class="small">
+        Want the app to ask for a fingerprint or screen lock? Press and hold its icon → <b>Server and lock</b>.
+      </p>
+
+      <h2>If something's wrong</h2>
+      <div class="scroll">
+        <table>
+          <tr><th>The app says</th><th>What to do</th></tr>
+          <tr><td>The certificate isn't trusted</td><td>Install your home's certificate on the phone (step 2), or use your Tailscale address.</td></tr>
+          <tr><td>Couldn't find that address</td><td>Check the spelling, and that the phone is on your home network or Tailscale.</td></tr>
+          <tr><td>It doesn't look like Hearth</td><td>The address reaches something else: check the port and the reverse proxy.</td></tr>
+        </table>
+      </div>
+
+      <footer>
+        <a href="../">All apps</a> · <a href="../privacy/">Privacy</a> · <a href="../delete-account/">Delete an account</a> ·
+        <a href="https://github.com/mikedmor/hearth/tree/main/guides">Hearth guides</a>
+      </footer>
+    </main>
+  </body>
+</html>

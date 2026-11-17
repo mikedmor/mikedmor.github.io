@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Delete an account or your data · Muny, Hearth and Arden</title>
+    <meta name="description" content="How to delete your account and data in the Muny, Hearth and Arden Android apps." />
+    <meta name="theme-color" content="#0c0a09" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="stylesheet" href="../apps.css" />
+  </head>
+  <body>
+    <div class="top">
+      <div class="wrap">
+        <a class="home" href="../../">mikedmor</a>
+        <nav>
+          <a href="../">Android apps</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="./">Delete an account</a>
+        </nav>
+      </div>
+    </div>
+    <main class="wrap">
+      <header class="page">
+        <p class="kicker">Account and data deletion</p>
+        <h1>Delete an account or your data</h1>
+        <p class="lede">
+          For the Android apps <b>Muny</b>, <b>Hearth</b> and <b>Arden</b> (by mikedmor). There's no account with me to
+          delete: your account and data live on the server you run, so deleting them happens there.
+        </p>
+      </header>
+
+      <h2>Your account on your server</h2>
+      <div class="card">
+        <h3>Muny</h3>
+        <ul>
+          <li><b>A household member or viewer:</b> the owner removes them under <b>Settings → Household &amp; account</b>. Their sign-in and sessions go; the household's shared records (accounts, transactions) stay, since they belong to the household.</li>
+          <li><b>Everything:</b> the owner stops the Muny container and deletes its data folder (<code>muny.db</code> and its backups). That is all of Muny's data.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Hearth</h3>
+        <ul>
+          <li><b>A person:</b> an admin removes them under <b>Settings → People</b>.</li>
+          <li><b>Everything:</b> stop the Hearth container and delete its data folder.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Arden Hub</h3>
+        <ul>
+          <li><b>A person:</b> the hub's owner removes their account from the hub's page. Their chats, records and keys are deleted with it. Anyone can sign their own devices out.</li>
+          <li><b>Everything:</b> uninstall Arden Hub and delete its data folder.</li>
+        </ul>
+      </div>
+      <p class="small">If someone else runs the server you use, ask them: only they can delete data there.</p>
+
+      <h2>Data on your phone</h2>
+      <ol class="steps">
+        <li><b>Sign out</b> in the app. In Muny this also deletes the offline copy.</li>
+        <li><b>Turn notifications off</b> in the app's notification settings. This deletes the phone's push token and keys, and stops your server sending to it.</li>
+        <li><b>Uninstall the app</b>, or <b>Settings → Apps → (the app) → Storage → Clear storage</b>. This removes everything the app kept on the phone.</li>
+      </ol>
+
+      <h2>Data held by me</h2>
+      <p>
+        None. The push relay that passes on notifications stores nothing and keeps no logs, so there's nothing to delete
+        there. See the <a href="../privacy/">privacy policy</a>.
+      </p>
+
+      <footer>
+        <a href="../">All apps</a> · <a href="../privacy/">Privacy</a> · <a href="../../">mikedmor.github.io</a>
+      </footer>
+    </main>
+  </body>
+</html>

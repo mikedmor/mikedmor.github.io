@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Muny for Android · Set up</title>
+    <meta name="description" content="Set up Muny on your own server and connect the Muny Android app to it." />
+    <meta name="theme-color" content="#0c0a09" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="stylesheet" href="../apps.css" />
+    <style>:root { --c: #34d399; }</style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="wrap">
+        <a class="home" href="../../">mikedmor</a>
+        <nav>
+          <a href="../">Android apps</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="../delete-account/">Delete an account</a>
+        </nav>
+      </div>
+    </div>
+    <main class="wrap">
+      <header class="page">
+        <p class="kicker">Muny for Android</p>
+        <h1>Set up Muny</h1>
+        <p class="lede">
+          Muny is personal finance and subscriptions on your own hardware. The app connects to <em>your</em> Muny: set
+          that up first, then point the app at it.
+        </p>
+      </header>
+
+      <h2>1. Run Muny at home</h2>
+      <p>
+        Muny is one Docker container (a PC, a NAS or a Raspberry Pi all work). Follow the
+        <a href="https://github.com/mikedmor/muny/blob/main/guides/install.md">install guide</a>, then open it in a
+        browser and create the owner account.
+      </p>
+      <p class="small">
+        Want to look around first? Start it once with <code>MUNY_DEMO=true</code> and it fills itself with a made-up
+        household.
+      </p>
+
+      <h2>2. Give it an https address your phone trusts</h2>
+      <p>The app only connects over <code>https://</code>. Either works:</p>
+      <ul>
+        <li><b>Tailscale</b> (easiest, and works away from home): turn on HTTPS for your tailnet and use the name it gives you, like <code>https://muny.your-tailnet.ts.net</code>.</li>
+        <li><b>A home name</b> such as <code>https://muny.home</code> behind a reverse proxy, with your home's root certificate installed on the phone (Settings → Security → Encryption &amp; credentials → Install a certificate → CA certificate).</li>
+      </ul>
+      <p class="small">More detail: <a href="https://github.com/mikedmor/muny/blob/main/guides/access.md">Access from your phone and other devices</a>.</p>
+
+      <h2>3. Connect the app</h2>
+      <ol class="steps">
+        <li>Install Muny from Google Play and open it.</li>
+        <li>Enter your Muny address, like <code>https://muny.home</code>, and tap <b>Connect</b>. The app checks it really is Muny.</li>
+        <li>Sign in with your Muny account. You'll be asked for your fingerprint or screen lock each time the app opens (you can turn that off under <b>Server and lock</b>: press and hold the app's icon).</li>
+      </ol>
+
+      <h2>Notifications</h2>
+      <p>
+        In the app, go to <b>Alerts → Settings → Turn on notifications here</b> and allow notifications. Then pick which
+        alerts this phone gets, and try <b>Send test</b>.
+      </p>
+      <p>
+        Nothing to set up on your server and nothing else to install: alerts arrive through Google Play services. Your
+        Muny encrypts each one for your phone before it leaves, so the relay that passes it on and Google only ever see
+        scrambled data. To turn app notifications off for your whole Muny, set <code>MUNY_PUSH_RELAY=off</code>.
+      </p>
+
+      <h2>Offline</h2>
+      <p>
+        In the app, Muny keeps an encrypted copy of the pages you've visited, so it still opens, read-only, when your
+        server can't be reached. Turn it off under <b>Settings → This device</b> if you prefer. It's deleted when you sign
+        out.
+      </p>
+
+      <h2>If something's wrong</h2>
+      <div class="scroll">
+        <table>
+          <tr><th>The app says</th><th>What to do</th></tr>
+          <tr><td>The certificate isn't trusted</td><td>Install your home's root certificate on the phone (step 2), or use your Tailscale address.</td></tr>
+          <tr><td>Couldn't find that address</td><td>Check the spelling, and that the phone is on your home network or Tailscale.</td></tr>
+          <tr><td>It doesn't look like Muny</td><td>The address reaches something else: check the port and the reverse proxy.</td></tr>
+          <tr><td>Can't reach Muny</td><td>The server or your connection is down. Pages you've opened before still show.</td></tr>
+        </table>
+      </div>
+
+      <footer>
+        <a href="../">All apps</a> · <a href="../privacy/">Privacy</a> · <a href="../delete-account/">Delete an account</a> ·
+        <a href="https://github.com/mikedmor/muny/tree/main/guides">Muny guides</a>
+      </footer>
+    </main>
+  </body>
+</html>

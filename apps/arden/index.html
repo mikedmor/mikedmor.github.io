@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arden for Android · Set up</title>
+    <meta name="description" content="Connect the Arden Android app to the Arden Hub running on your own PC." />
+    <meta name="theme-color" content="#0c0a09" />
+    <link rel="icon" href="../../favicon.ico" sizes="48x48" />
+    <link rel="stylesheet" href="../apps.css" />
+    <style>:root { --c: #8b7bff; }</style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="wrap">
+        <a class="home" href="../../">mikedmor</a>
+        <nav>
+          <a href="../">Android apps</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="../delete-account/">Delete an account</a>
+        </nav>
+      </div>
+    </div>
+    <main class="wrap">
+      <header class="page">
+        <p class="kicker">Arden for Android</p>
+        <h1>Set up Arden Hub</h1>
+        <p class="lede">
+          Arden is a local-first AI companion that runs on your own PC. Arden Hub shares it with the rest of the house,
+          and the app is your hub, on your phone.
+        </p>
+      </header>
+
+      <div class="card note">
+        <p>Arden is in early testing. The hub's setup guide arrives with Arden's first public release.</p>
+      </div>
+
+      <h2>1. Run Arden Hub</h2>
+      <p>
+        Arden Hub runs on a PC at home (it can use that PC's graphics card), or in Docker. Open it in a browser and
+        create the first person.
+      </p>
+
+      <h2>2. Give it an https address your phone trusts</h2>
+      <p>
+        The app only connects over <code>https://</code>: use your Tailscale name, or a home name such as
+        <code>https://ai.home</code> behind a reverse proxy, with your home's root certificate installed on the phone
+        (Settings → Security → Encryption &amp; credentials → Install a certificate → CA certificate).
+      </p>
+
+      <h2>3. Connect the app</h2>
+      <ol class="steps">
+        <li>Install Arden from Google Play and open it.</li>
+        <li>Enter your hub's address, like <code>https://ai.home</code>, and tap <b>Connect</b>. The app checks it really is Arden Hub.</li>
+        <li>Sign in as yourself.</li>
+      </ol>
+
+      <h2>If something's wrong</h2>
+      <div class="scroll">
+        <table>
+          <tr><th>The app says</th><th>What to do</th></tr>
+          <tr><td>The certificate isn't trusted</td><td>Install your home's root certificate on the phone, or use your Tailscale address.</td></tr>
+          <tr><td>Couldn't find that address</td><td>Check the spelling, and that the phone is on your home network or Tailscale.</td></tr>
+          <tr><td>It doesn't look like Arden</td><td>The address reaches something else, such as a plain Ollama server: check the port.</td></tr>
+        </table>
+      </div>
+
+      <footer>
+        <a href="../">All apps</a> · <a href="../privacy/">Privacy</a> · <a href="../delete-account/">Delete an account</a>
+      </footer>
+    </main>
+  </body>
+</html>

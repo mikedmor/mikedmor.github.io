@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Android apps · mikedmor</title>
+    <meta name="description" content="Android apps for Muny, Hearth and Arden Hub: your own self-hosted server, as a real app on your phone." />
+    <meta name="theme-color" content="#0c0a09" />
+    <link rel="icon" href="../favicon.ico" sizes="48x48" />
+    <link rel="stylesheet" href="apps.css" />
+  </head>
+  <body>
+    <div class="top">
+      <div class="wrap">
+        <a class="home" href="../">mikedmor</a>
+        <nav>
+          <a href="./">Android apps</a>
+          <a href="privacy/">Privacy</a>
+          <a href="delete-account/">Delete an account</a>
+        </nav>
+      </div>
+    </div>
+    <main class="wrap">
+      <header class="page">
+        <p class="kicker">Android apps</p>
+        <h1>Your own server, as a real app</h1>
+        <p class="lede">
+          Muny, Hearth and Arden Hub run on your own hardware, at home. Their Android apps open your server in an app
+          of its own, with no browser around it, and add what a web page can't.
+        </p>
+      </header>
+
+      <div class="apps">
+        <a class="card" href="muny/" style="--c: #34d399">
+          <span class="name">Muny</span>
+          <span class="what">Personal finance and subscriptions.</span>
+        </a>
+        <a class="card" href="hearth/" style="--c: #ff7a2f">
+          <span class="name">Hearth</span>
+          <span class="what">The family's start page for the home network.</span>
+        </a>
+        <a class="card" href="arden/" style="--c: #8b7bff">
+          <span class="name">Arden Hub</span>
+          <span class="what">Your local AI companion, from your phone.</span>
+        </a>
+      </div>
+
+      <h2>What the apps add</h2>
+      <ul>
+        <li><b>Your server, nobody else's.</b> The app asks for your server's address the first time and only ever talks to it. Nothing is hosted for you, and nothing about you is sent to me.</li>
+        <li><b>Fingerprint or screen lock</b> when the app opens, and again after a few minutes away.</li>
+        <li><b>Notifications</b> under the app's own name and icon, encrypted on your server so that only your phone can read them.</li>
+        <li><b>Works offline</b> where the server's web app does: it opens with what you last saw.</li>
+        <li><b>Shortcuts</b> when you press and hold the icon, and downloads that land in Downloads or open in your phone's viewer.</li>
+      </ul>
+
+      <h2>What you need</h2>
+      <ol class="steps">
+        <li><b>The server running at home.</b> Each app's page links to its install guide (Docker, about ten minutes).</li>
+        <li><b>An <code>https://</code> address for it that your phone can reach</b>, such as a Tailscale name, or a home name like <code>https://muny.home</code> with your home's certificate installed on the phone.</li>
+        <li><b>The app</b>, then enter that address when it asks.</li>
+      </ol>
+
+      <div class="card note">
+        <p>The apps are free, with no ads, no tracking and no accounts with me. See <a href="privacy/">Privacy</a> for exactly what goes where.</p>
+      </div>
+
+      <footer>
+        <a href="../">mikedmor.github.io</a> · <a href="privacy/">Privacy</a> · <a href="delete-account/">Delete an account</a> ·
+        <a href="https://github.com/mikedmor">GitHub</a>
+      </footer>
+    </main>
+  </body>
+</html>
