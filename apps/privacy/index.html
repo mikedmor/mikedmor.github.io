@@ -62,6 +62,7 @@
         <li>The phone gets a <b>push token</b> from Google's Firebase Cloud Messaging and hands it, with a public encryption key, to <b>your</b> server.</li>
         <li>For each alert, your server <b>encrypts it for your phone</b> and sends it through the apps' <b>push relay</b> (a small service on Cloudflare that I run) to Google, which delivers it. Only your phone can decrypt it.</li>
         <li>The relay and Google see only the push token and encrypted data: never what the alert says. The relay stores nothing and keeps no logs.</li>
+        <li><b>Without Google:</b> if you choose a UnifiedPush app (such as ntfy) in the app's <b>Server and lock</b> settings instead, your server sends the encrypted alert straight to that app's server, with no relay and no Google. That push service then sees only the encrypted data.</li>
         <li>Turning notifications off in the app deletes the token and the keys. Whoever runs the server can also turn app notifications off for everyone (for Muny, <code>MUNY_PUSH_RELAY=off</code>).</li>
       </ul>
       <p class="small">
