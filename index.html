@@ -695,6 +695,13 @@
         "simhub-griddash": "https://griddashhub.com/",
       };
 
+      /** Android apps on Google Play, by application id. A link `{ play: true }` becomes an Android button. */
+      const PLAY = {
+        hearth: "io.github.mikedmor.hearth",
+        muny: "io.github.mikedmor.muny",
+        Arden: "io.github.mikedmor.arden",
+      };
+
       /**
        * The big sections, in order. Pictures live in img/<project>/. A link with `site: true` is the
        * project's own site, shown once it's known to answer.
@@ -721,6 +728,8 @@
           links: [
             { label: "Visit the site", site: true },
             { label: "Code", code: true },
+            { label: "Guide", href: "https://mikedmor.com/hearth/guide/" },
+            { label: "Android", play: true },
           ],
         },
         {
@@ -749,6 +758,7 @@
           links: [
             { label: "Visit the site", site: true },
             { label: "Code", code: true },
+            { label: "Android", play: true },
           ],
         },
         {
@@ -772,7 +782,8 @@
           links: [
             { label: "Visit the site", site: true },
             { label: "Code", code: true },
-            { label: "Guides", href: `https://github.com/${USER}/muny/tree/main/guides` },
+            { label: "Guide", href: "https://mikedmor.com/muny/guide/" },
+            { label: "Android", play: true },
           ],
         },
         {
@@ -1009,12 +1020,34 @@
       function linksOf(p, repo) {
         const code = repo ? safeUrl(repo.html_url) : `https://github.com/${USER}/${p.repo}`;
         const site = repo ? siteOf(repo) : SITES[p.repo] || null;
+        const play = PLAY[p.repo] && `https://play.google.com/store/apps/details?id=${PLAY[p.repo]}`;
         const list = p.links
-          .map((l) => (l.site ? site && { ...l, href: site } : l.code ? (repo || !p.unreleased) && { ...l, href: code } : l))
+          .map((l) =>
+            l.site ? site && { ...l, href: site }
+            : l.code ? (repo || !p.unreleased) && { ...l, href: code }
+            : l.play ? play && { ...l, href: play }
+            : l,
+          )
           .filter(Boolean)
           .map((l) => ({ ...l, external: !l.code }));
         if (list.length) list[0].primary = true;
         return list;
+      }
+      const phoneIcon = () =>
+        el("span", {
+          "aria-hidden": "true",
+          style: "display: contents",
+          html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></svg>`,
+        });
+      /** A project's link as a button. */
+      function linkBtn(l) {
+        return el(
+          "a",
+          { class: `btn${l.primary ? " primary" : ""}`, href: l.href, title: l.play ? "Get it on Google Play" : null },
+          l.play ? phoneIcon() : null,
+          l.label,
+          l.external ? " ↗" : "",
+        );
       }
 
       /**
@@ -1214,7 +1247,7 @@
             ? el(
                 "div",
                 { class: "cta" },
-                links.map((l) => el("a", { class: `btn${l.primary ? " primary" : ""}`, href: l.href }, l.label, l.external ? " ↗" : "")),
+                links.map(linkBtn),
               )
             : null,
         );
@@ -1253,7 +1286,7 @@
                 el(
                   "div",
                   { class: "cta" },
-                  linksOf(p, repo).map((l) => el("a", { class: `btn${l.primary ? " primary" : ""}`, href: l.href }, l.label, l.external ? " ↗" : "")),
+                  linksOf(p, repo).map(linkBtn),
                 ),
               ),
             );

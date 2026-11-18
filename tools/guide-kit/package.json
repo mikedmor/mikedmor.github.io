@@ -1,0 +1,10 @@
+{
+  "name": "guide-kit",
+  "private": true,
+  "description": "Turns a project's Markdown guides into a static guide site.",
+  "type": "module",
+  "bin": { "guide-kit": "build.mjs" },
+  "dependencies": {
+    "marked": "15.0.12"
+  }
+}
